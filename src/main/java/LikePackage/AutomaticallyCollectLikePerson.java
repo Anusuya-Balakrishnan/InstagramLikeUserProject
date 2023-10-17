@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class AutomaticallyCollectLikePerson {
-	public void mainLikePerson() {
+	public void mainLikePerson() throws InterruptedException {
 		
 		
 		
@@ -183,7 +183,7 @@ public class AutomaticallyCollectLikePerson {
 
 
 
-	public void sendMessage(RemoteWebDriver driver, WebDriverWait wait,String personName,String sendMessage) {
+	public void sendMessage(RemoteWebDriver driver, WebDriverWait wait,String personName,String sendMessage) throws InterruptedException {
 		
 //	    finding direct message element
 		WebElement messageButtonElement=wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -245,10 +245,11 @@ public class AutomaticallyCollectLikePerson {
 		WebElement sendButtonElement=wait.until(ExpectedConditions.presenceOfElementLocated(
 				By.xpath("//div[text()='Send']")));
 		sendButtonElement.click();
+		Thread.sleep(5000);
 
 	}
 
-public static void main(String[] args) {
+public static void main(String[] args) throws InterruptedException {
 	AutomaticallyCollectLikePerson a=new AutomaticallyCollectLikePerson();
 	a.mainLikePerson();
 }

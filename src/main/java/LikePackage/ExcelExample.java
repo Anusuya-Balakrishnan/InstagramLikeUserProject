@@ -49,6 +49,17 @@ public class ExcelExample {
 		                	   sendMessage=row.getCell(1).getStringCellValue();
 		                   }
 		                   
+		                   else if(keyCell.getStringCellValue().equals("linkMessage")) {
+		                	   
+		                	   
+		                	   if(row.getCell(1)!=null && !(row.getCell(1).getStringCellValue().isEmpty())) {
+				            	   sendMessage=sendMessage.concat(" ").concat(row.getCell(1).getStringCellValue());
+				               }
+		                	   
+
+
+		                   }
+
 		               }
 
 			
@@ -56,8 +67,8 @@ public class ExcelExample {
 		}catch (IOException e) {
 	        e.printStackTrace();
 	    }
-			System.out.println(postUrl);
-		return new UserDetailsClass(username, password, sendMessage, postUrl)	;
+			System.out.println(sendMessage);
+		return new UserDetailsClass(username, password, sendMessage, postUrl);
 
 	}
 	public ArrayList<InstagramPerson> readData() {
@@ -96,6 +107,8 @@ public class ExcelExample {
 		return existingPerson;
 	}
 	
+	
+	
 	public  void writeData(ArrayList<InstagramPerson> personList) {
 		// Specify the existing file you want to append data to
 		String currentDirectory = System.getProperty("user.dir");
@@ -123,6 +136,53 @@ public class ExcelExample {
                 Cell cell4 = row.createCell(3);
                 cell4.setCellValue(eachPerson.response);
             }
+
+            try (FileOutputStream outputStream = new FileOutputStream(existingFilePath)) {
+                existingWorkbook.write(outputStream);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public  void writeProgramCount() {
+		// Specify the existing file you want to append data to
+		String currentDirectory = System.getProperty("user.dir");
+        String existingFilePath = currentDirectory + File.separator + "data.xlsx";
+//        String existingFilePath = "data.xlsx";
+        try (FileInputStream existingFileInputStream = new FileInputStream(existingFilePath);
+             Workbook existingWorkbook = new XSSFWorkbook(existingFileInputStream)) {
+
+            Sheet sheet = existingWorkbook.getSheet("Data");
+
+            Iterator<Row> rowIterator = sheet.iterator();
+            // Calculate the next available row
+            int startRow=0;
+            int rowLast = sheet.getLastRowNum();
+
+            while (startRow<=rowLast) {
+                Row row = rowIterator.next();
+                Cell keyCell = row.getCell(0);//postName
+                Cell valueCell1 = row.getCell(1);//personName
+                Cell valueCell2 = row.getCell(2);//personURl
+                Cell valueCell3 = row.getCell(3);//response
+
+                startRow++;
+            }
+
+            // Add the new data to the existing sheet
+//            for (InstagramPerson eachPerson:personList) {
+//                Row row = sheet.createRow(rowNum++);
+//                Cell cell1 = row.createCell(0);
+//                cell1.setCellValue(eachPerson.postName);
+//
+//                Cell cell2 = row.createCell(1);
+//                cell2.setCellValue(eachPerson.personName);
+//                Cell cell3 = row.createCell(2);
+//                cell3.setCellValue(eachPerson.personUrl);
+//                Cell cell4 = row.createCell(3);
+//                cell4.setCellValue(eachPerson.response);
+//            }
 
             try (FileOutputStream outputStream = new FileOutputStream(existingFilePath)) {
                 existingWorkbook.write(outputStream);
